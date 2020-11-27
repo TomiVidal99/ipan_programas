@@ -5,14 +5,15 @@ function [f, error_code] = vandermonde(data, max_grade)
     % la funcion devuelve f que es la funcion que se quiere obtener para ajustar los datos
     % y devulve un numero de error dependiendo el estado en el que haya terminado de ejecutarse la funcion
     % polinome_grade es el grado del polinomio que se desea obtener
-    % se requiere que se le de data como parametro, data es el conjunto de puntos de la funcion a aproximar, se suponen que los datos se dan en la primera fila la variable dependiente y en la segunda fila la funcion evaluada
+    % se requiere que se le de data como parametro, data es el conjunto de puntos de la funcion a aproximar, se suponen que los datos se dan en dos columnas y n filas, donde en la primera columna estan los datos de la variable independiente y en la segunda los de la dependiente.
+    data = transpose(data)
     error_code = 0;
     f = 0;
     [data_rows, data_columns] = size(data);
 
     % compruebo que los puntos dados tengan la dimension correcta
     if (data_rows == 0 || data_columns == 0 || data_rows > data_columns) 
-        error_code = 2;
+        error_code = 1;
         disp('ERROR: los datos ingresados no tienen la dimension correcta');
     end
 
@@ -49,10 +50,10 @@ function [f, error_code] = vandermonde(data, max_grade)
     end
 
     % grafico para ver como es la aproximacion
-    hold off;
-    for (it = 10:0.1:15)
-       plot(it, f(it), 'r+'); hold on;
-    end
-    plot(data(1,1:max_iterations), data(2,1:max_iterations), 'b*'); hold on;
+    %hold off;
+    %for (it = -5:1:5)
+       %plot(it, f(it), 'r+'); hold on;
+    %end
+    %plot(data(1,1:max_iterations), data(2,1:max_iterations), 'b*'); hold on;
 
 end
