@@ -25,12 +25,13 @@ function [function_aproximated, error_code] = lagrange(data, polinome_grade)
         disp("ERROR: el grado de polinomio no es aceptable")
     else
        for n = 1:polinome_grade
+           product = @(x) 1;
            for k = 1:polinome_grade
                if (k != n)
-                   product = @(x) ((x - X(k)) / (X(n) - X(k)));
-                   function_aproximated = @(x) ( function_aproximated(x) + ( Y(n) * product(x) );
+                   product = @(x) ( product(x) * ((x - X(k)) / (X(n) - X(k))));
                end
            end
+           function_aproximated = @(x) ( function_aproximated(x) + ( Y(n) * product(x) ));
        end
     end
 end
