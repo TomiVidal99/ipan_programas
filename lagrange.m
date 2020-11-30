@@ -20,10 +20,14 @@ function [function_aproximated, error_code] = lagrange(data, polinome_grade)
     if (data_cols != 2 || data_rows < 2)
         error_code = 1;
         disp("ERROR: la matriz ingresada no tiene las dimensiones correctas")
-    elseif (polinome_grade < 0 || polinome_grade > 1000)
-        error_code = 2;
-        disp("ERROR: el grado de polinomio no es aceptable")
     else
+       if (polinome_grade < 0 || polinome_grade > 1000 || polinome_grade == 'max')
+           error_code = 2;
+           disp("ERROR: el grado de polinomio no es aceptable")
+           disp('Se usara el maximo disponible: ');
+           disp(data_rows);
+           polinome_grade = data_rows;
+       end
        for n = 1:polinome_grade
            product = @(x) 1;
            for k = 1:polinome_grade
