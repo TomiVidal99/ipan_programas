@@ -31,11 +31,12 @@ function [f, error_code] = interpolacion_newton(data)
         table(1:end, 2) = Y;
 
         % aplico el algoritmo para llenar la tabla con las diferencias divididas
+        k = 1;
         for (m = 3:(N+1))
-            for (n = 1:N-1)
-               diferencia_dividida = (Y(n+1) - Y(n)) / (X(n+1) - X(n));
-               table(n,m) = diferencia_dividida;
+            for (n = 1:(N-k))
+               table(n,m) = ( (table(n+1, m-1) - table(n, m-1)) / (table(n+1, 1) - table(n, 1)) );
             end
+            k = k+1;
         end
 
         % ahora creo el polinomio a partir de la tabla de diferencias divididas
