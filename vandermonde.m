@@ -14,12 +14,14 @@ function [f, error_code] = vandermonde(data, grade)
     if (data_rows == 0 || data_columns == 0 || data_rows  < data_columns) 
         error_code = 1;
         disp('ERROR: los datos ingresados no tienen la dimension correcta');
-    elseif (grade > data_rows)
-        error_code = 2;
-        disp('ERROR: el grado ingresado es mayor al numero de puntos dados');
-        disp('El maximo disponible es: ');
-        disp(data_rows);
     else
+        if (grade > data_rows || grade == 'max')
+            error_code = 2;
+            disp('ERROR: el grado ingresado es mayor al numero de puntos dados');
+            disp('Se usara el maximo disponible: ');
+            disp(data_rows);
+            grade = data_rows;
+        end
 
         % genero la matriz V
         V = ones(grade);

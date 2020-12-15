@@ -1,14 +1,15 @@
 % HECHO POR TOMAS VIDAL
-% METODO DE NEWTON PARA HALLAR UNA FUNCION QUE INTERPOLE UN CONJUNTO DE PUNTOS DADOS
+% METODO DE INTERPOLACION SPLINES PARA HALLAR UNA FUNCION QUE INTERPOLA LOS DATOS DADOS 
+% TRAZANDO RECTAS ENTRE LOS PUNTOS
 
-function [f, error_code] = interpolacion_newton(data)
+function [f, error_code] = splines(data)
     % la funcion devuelve f que es la funcion que se quiere obtener para ajustar los datos
     % y devulve un numero de error dependiendo el estado en el que haya terminado de ejecutarse la funcion
     % polinome_grade es el grado del polinomio que se desea obtener
     % se requiere que se le de data como parametro, data es el conjunto de puntos de la funcion a aproximar, se suponen que los datos se dan en dos columnas y n filas, donde en la primera columna estan los datos de la variable independiente y en la segunda los de la dependiente.
     error_code = 0;
-    f = 0;
     [data_rows, data_columns] = size(data);
+    f = @(x) 0;
 
     % defino el vector X que contiene los valores de la variable independiente
     X = data(1:end, 1);
@@ -24,34 +25,15 @@ function [f, error_code] = interpolacion_newton(data)
         disp('ERROR: los datos ingresados no tienen la dimension correcta');
     else
 
-        % defino la tabla de diferencias divididas
-        table = zeros(N, N+1);
-        % le asigno las dos primeras columnas a los puntos dados
-        table(1:end, 1) = X;
-        table(1:end, 2) = Y;
-
-        % aplico el algoritmo para llenar la tabla con las diferencias divididas
-        k = 1;
-        for (m = 3:(N+1))
-            for (n = 1:(N-k))
-               table(n,m) = ( (table(n+1, m-1) - table(n, m-1)) / (table(n+1, 1) - table(n, 1)) );
+        step = 0.05;
+        for (n = 2:N)
+            a = Y(n-1);
+            b = (Y(n) - Y(n-1)) / (X(n) - X(n-1));
+            sn = @(x) (a + b * (x - X(n)));
+            for (j = X(n-1):step:X(n))
+                hold on;
+                plot(j, sn(j), 'r*');
             end
-            k = k+1;
-        end
-
-        % ahora creo el polinomio a partir de la tabla de diferencias divididas
-        f = @(x) Y(1);
-        for (n = 3:(N+1))
-
-            % creo el producto de los N (x - xn)
-            product = @(x) 1;
-            for (k = 1:(n-2))
-               product = @(x) (product(x) * (x - X(k)));
-            end
-
-            % ahora hago la suma 
-            f = @(x) f(x) + table(1, n) * product(x);
-
         end
 
     end
