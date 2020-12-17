@@ -14,6 +14,9 @@ function [aproximated_points, acumulated_error, error_code] = taylor_pvi(functio
     % real_function es la funcion analitica que resulve, si se conoce se puede saber los errores, locales y acumulados, si no se quiere entregar este parametro usar @(x) 0 simplemente
 
     % defino los valores que devuelve la funcion
+    interval_a = interval(1);
+    interval_b = interval(2);
+
     error_code = 0;
     acumulated_error = NaN;
     aproximated_points = NaN;
