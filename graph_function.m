@@ -6,6 +6,7 @@ function graph_function(f, a, b, step, color)
     if (color)
         for (x = a:step:b)
             plot(x, f(x), color); hold on;
+            %loglog(x, f(x), color); hold on;
         end
     else
         for (x = a:step:b)

@@ -44,7 +44,7 @@ function [aproximated_points, acumulated_error, error_code] = euler_pvi(function
         % calculo el error acumulador para el n-esimo valor
         acumulated_error = Y(length(Y)-1) - Y(length(Y));
 
-        if (exis(real_function) == 1)
+        if (exist('real_function') == 1)
             aproximated_points = [X;Y; local_error];
         end
 
