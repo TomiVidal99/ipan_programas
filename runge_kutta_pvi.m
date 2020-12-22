@@ -47,6 +47,13 @@ function [aproximated_points, acumulated_error, error_code] = runge_kutta_pvi(fu
 
         % eligo el algoritmo correcto dependiendo del grado ingresado
         switch (polinome_grade)
+            % caso para el grado 2
+            case 2 
+                for (n = 1:(max_iterations-1))
+                    k1 = (looping_step/2)*(function_x_y(X(n), Y(n)));
+                    k2 = looping_step*function_x_y(X(n)+(looping_step/2), Y(n) + k1);
+                    Y(n+1) = Y(n) + k2;
+                end
             % caso para grado 4
             case 4
                 if (n_position != 1)

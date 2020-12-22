@@ -11,7 +11,7 @@ function [aproximated_points, acumulated_error, error_code] = adams_bashforth_pv
     % real_function es la funcion analitica que resuelve la solucion, si se conoce se puede conocer los errores exactos
 
     error_code = 0;
-    acumulated_error = NaN;
+    acumulated_error = 0;
     aproximated_points = NaN;
 
     % TODO: comprobar que se cumplan las condiciones necesarias para aplicar el metodo
@@ -40,15 +40,17 @@ function [aproximated_points, acumulated_error, error_code] = adams_bashforth_pv
     else
 
         % reemplazo los valores de Y con los que ya conozco
-        for (n = 0:(grade-1))
-            Y(n_iteration+n) = known_points(2, 1+n);
-        end
+        %for (n = 0:(grade-1))
+            %Y(n_iteration+n) = known_points(2, 1+n);
+        %end
+
+        Y(1:length(known_points)) = known_points(2,:);
 
         % aplico el algoritmo
         switch (grade)
             case 2
                 % para el caso de dos pasos
-                if (length(known_points) == 2)
+                if (length(known_points) >= 2)
                     for (n = n_iteration:(max_iterations-2))
                         Y(n+2) = Y(n+1) + (looping_step/2)*(3*function_x_y(X(n+1), Y(n+1))-function_x_y(X(n), Y(n)));
                     end
@@ -58,9 +60,10 @@ function [aproximated_points, acumulated_error, error_code] = adams_bashforth_pv
                 end
             case 3
                 % para el caso de tres pasos
-                if (length(known_points) == 3)
+                if (length(known_points) >= 3)
                     for (n = (n_iteration+2):(max_iterations-2))
                         Y(n+1) = Y(n) + (looping_step/12)*(23*function_x_y(X(n),Y(n)) - 16*function_x_y(X(n-1), Y(n-1)) + 5*function_x_y(X(n-2), Y(n-2)));
+                        acumulated_error = acumulated_error + abs(real_function(X(n+1)) - Y(n+1));
                     end
                 else
                     error_code = 5;
@@ -68,9 +71,10 @@ function [aproximated_points, acumulated_error, error_code] = adams_bashforth_pv
                 end
             case 4
                 % para el caso de cuatro pasos
-                if (length(known_points) == 4)
+                if (length(known_points) >= 4)
                     for (n = (n_iteration+3):(max_iterations-3))
                         Y(n+1) = Y(n) + (looping_step/24)*(55*function_x_y(X(n), Y(n)) - 59*function_x_y(X(n-1), Y(n-1)) + 37*function_x_y(X(n-2), Y(n-2)) - 9*function_x_y(X(n-3), Y(n-3)));
+                        acumulated_error = acumulated_error + abs(real_function(X(n+1)) - Y(n+1));
                     end
                 else
                     error_code = 6;
@@ -78,7 +82,7 @@ function [aproximated_points, acumulated_error, error_code] = adams_bashforth_pv
                 end
             case 5
                 % para el caso de cinco pasos
-                if (length(known_points) == 5)
+                if (length(known_points) >= 5)
                     for (n = (n_iteration+4):(max_iterations-4))
                         Y(n+1) = Y(n) + (looping_step/720)*(1901*function_x_y(X(n), Y(n)) - 2774*function_x_y(X(n-1), Y(n-1)) + 2616*function_x_y(X(n-2), Y(n-2)) - 1274*function_x_y(X(n-3), Y(n-3)) + 251*function_x_y(X(n-4), Y(n-4)));
                     end
